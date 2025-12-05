@@ -105,9 +105,29 @@ public class Main {
         contrasenaActual = contraAlmacenada;
         System.out.println("¡Acceso concedido!");
     }
-    // leemos la contraseña.
+    
     private static String leerContrasena(String mensaje) {
-        System.out.print(mensaje);
-        return lector.nextLine().trim();
+        Console console = System.console();
+        String contrasena = "";
+
+        while (true) {
+            if (console != null) {
+                char[] pass = console.readPassword(mensaje);
+                contrasena = new String(pass);
+            } else {
+                System.out.print(mensaje);
+                contrasena = lector.nextLine();
+            }
+
+            if (contrasena.length() < 8) {
+                System.out.println("Miau (Debe tener al menos 8 caracteres)");
+            } else {
+                System.out.println("Woof (Contraseña válida)");
+                break; 
+            }
+        }
+
+        return contrasena;
     }
+
 }
