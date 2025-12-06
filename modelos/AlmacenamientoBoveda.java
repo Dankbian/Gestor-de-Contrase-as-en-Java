@@ -3,32 +3,23 @@ package modelos;
 import java.io.*;
 import javax.crypto.SecretKey;
 
+
 public class AlmacenamientoBoveda {
 
     private static final String NOMBRE_ARCHIVO = "boveda.dat";
     private File archivoBoveda;
 
     public AlmacenamientoBoveda() {
-        
-        File directorioActual = new File(System.getProperty("user.dir"));
-        File raizProyecto = directorioActual;
 
-        while (raizProyecto != null) {
-            File srcDir = new File(raizProyecto, "src");
-            File ideaDir = new File(raizProyecto, ".idea");
+        // Carpeta oculta en HOME para hacerlo pro y seguro
+        File dirBoveda = new File(System.getProperty("user.home"), ".boveda");
 
-            if (srcDir.exists() || ideaDir.exists()) {
-                break;
-            }
-
-            if (raizProyecto.getParentFile() == null) {
-                break;
-            }
-
-            raizProyecto = raizProyecto.getParentFile();
+        if (!dirBoveda.exists()) {
+            dirBoveda.mkdirs(); // crea ~/.boveda
         }
 
-        archivoBoveda = new File(raizProyecto, NOMBRE_ARCHIVO);
+        archivoBoveda = new File(dirBoveda, NOMBRE_ARCHIVO);
+
         System.out.println("Archivo de bóveda en: " + archivoBoveda.getAbsolutePath());
     }
 
