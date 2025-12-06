@@ -1,6 +1,7 @@
 package main;
 
 import modelos.Boveda;
+import modelos.VerificarContrasena;
 import modelos.AlmacenamientoBoveda;
 import modulos.ModuloBase;
 import modulos.ModuloArchivos;
@@ -37,7 +38,7 @@ public class Main {
             }
 
 
-
+            
             // POLIMORFISMO: Usamos la clase Padre (ModuloBase) para referirnos a los hijos
             ModuloBase moduloBoveda = new ModuloBoveda(boveda, almacenamiento, contrasenaActual, lector);
             ModuloBase moduloArchivos = new ModuloArchivos(contrasenaActual, lector);
@@ -79,16 +80,16 @@ public class Main {
     // --- Métodos de Login ---
 
     private static void crearNuevaBoveda() throws Exception {
-        System.out.println("\n--- Configuración Inicial ---");
+        System.out.println("\n--- Configuración Inicial ---");  
         System.out.println("Bienvenido. Crea una contraseña maestra.");
-
-        String nuevaContra = leerContrasena("Nueva contraseña: ");
-        String nuevaContraVerificada = leerContrasena("Confirma contraseña: ");
+        
+        String nuevaContra = leerContrasena("Nueva contraseña: ", true);
+        String nuevaContraVerificada = leerContrasena("Confirme su contraseña: ", false);
 
         if (!nuevaContra.equals(nuevaContraVerificada)) {
             throw new Exception("Las contraseñas no coinciden.");
         }
-        //
+
         contrasenaActual = nuevaContra;
         boveda = new Boveda();
         almacenamiento.guardarBoveda(boveda, contrasenaActual);
@@ -99,18 +100,19 @@ public class Main {
     private static void iniciarSesion() throws Exception {
         System.out.println("\n--- Inicio de Sesión ---");
         // contraAlmacenada es una variable local de tipo String que almacena la contraseña ingresada por el usuario.
-        String contraAlmacenada = leerContrasena("Introduce tu contraseña maestra: ");
+        String contraAlmacenada = leerContrasena("Introduce tu contraseña maestra: ", false);
 
         boveda = almacenamiento.cargarBoveda(contraAlmacenada);
         contrasenaActual = contraAlmacenada;
         System.out.println("¡Acceso concedido!");
     }
     
-    private static String leerContrasena(String mensaje) {
+    private static String leerContrasena(String mensaje, boolean pene) {
         Console console = System.console();
         String contrasena = "";
+        boolean bandera = true;
 
-        while (true) {
+        while (bandera) {
             if (console != null) {
                 char[] pass = console.readPassword(mensaje);
                 contrasena = new String(pass);
@@ -119,15 +121,21 @@ public class Main {
                 contrasena = lector.nextLine();
             }
 
-            if (contrasena.length() < 8) {
-                System.out.println("Miau (Debe tener al menos 8 caracteres)");
+            if (pene) {
+                bandera = esNueva(contrasena);
             } else {
-                System.out.println("Woof (Contraseña válida)");
-                break; 
+                bandera = false;
             }
         }
-
         return contrasena;
+    }
+
+    private static boolean esNueva(String contrasena) {
+        if(VerificarContrasena.esValida(contrasena)){
+            return false;
+        } else {
+            return true;
+        }
     }
 
 }
