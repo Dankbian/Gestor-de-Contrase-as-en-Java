@@ -1,7 +1,8 @@
 # Gestor-de-Contrase-as-en-Java
 Proyecto final para Paradigmas de la programación
 
-'''plaintext  
+```md
+<pre>
 Gestor-de-Contraseñas-en-Java
 ├── main
 │   └── Main.java
@@ -16,3 +17,4 @@ Gestor-de-Contraseñas-en-Java
 │   ├── ModuloBase.java
 │   └── ModuloBoveda.java
 └── README.md
+</pre>
