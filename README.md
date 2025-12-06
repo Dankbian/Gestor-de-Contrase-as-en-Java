@@ -2,7 +2,7 @@
 Proyecto final para Paradigmas de la programación
 
 ```bash
-Gestor-de-Contrase-as-en-Java
+Gestor-de-Contraseñas-en-Java
 ├── main
 │   └── Main.java
 ├── modelos
