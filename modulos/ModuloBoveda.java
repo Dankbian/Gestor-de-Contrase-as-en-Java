@@ -34,12 +34,13 @@ public class ModuloBoveda extends ModuloBase {
             // Menú dinámico
             System.out.println("1. Agregar secreto");
             if (estaVacia) {
-                System.out.println("4. Guardar y Regresar");
-            } else {
-                System.out.println("2. Ver secreto");
-                System.out.println("3. Listar secretos");
-                System.out.println("4. Eliminar secreto");
                 System.out.println("5. Guardar y Regresar");
+            } else {
+                System.out.println("2. Listar secretos");
+                System.out.println("3. Actualizar secreto");
+                System.out.println("4. Ver secreto");
+		System.out.println("5. Eliminar secreto");
+                System.out.println("6. Guardar y Regresar");
             }
             System.out.print("> ");
 
@@ -47,7 +48,7 @@ public class ModuloBoveda extends ModuloBase {
 
             // Ajuste de lógica si está vacía (para que el menú coincida)
             if (estaVacia) {
-                if (opcion == 4) opcion = 5;
+                if (opcion == 5) opcion = 6;
                 else if (opcion != 1) opcion = -1;
             }
 
@@ -60,26 +61,38 @@ public class ModuloBoveda extends ModuloBase {
                     boveda.agregarSecreto(nombre, valor);
                     break;
                 case 2:
-                    System.out.print("Nombre a buscar: ");
-                    String buscar = lector.nextLine();
-                    System.out.println("Valor: " + boveda.obtenerSecreto(buscar));
-                    break;
+		    System.out.println("--- Lista de secretos ---");
+		    boveda.listarNombresSecretos().forEach(System.out::println);
+		    break;
                 case 3:
-                    System.out.println("--- Lista de Secretos ---");
-                    boveda.listarNombresSecretos().forEach(System.out::println);
+                    System.out.println("Introduzca el nombre del secreto que desea actualizar: ");
+                    String nombreActualizar = lector.nextLine();
+		    if(boveda.listarNombresSecretos().contains(nombreActualizar)){
+		       System.out.print("Nuevo nombre para el secreto ' " + nombreActualizar + "': ");
+		      String nuevoValor = lector.nextLine();
+		      boveda.agregarSecreto(nombreActualizar, nuevoValor);
+		      System.out.println("Secreto '" + nombreActualizar + "' actualizado");
+		    } else {
+		        System.out.println("ERROR: El secreto no existe");
+		    }
                     break;
                 case 4:
-                    System.out.print("Nombre a eliminar: ");
-                    String eliminar = lector.nextLine();
-                    boveda.eliminarSecreto(eliminar);
+                    System.out.print("Nombre a buscar: ");
+		    String buscar = lector.nextLine();
+		    System.out.println("Valor: " + boveda.obtenerSecreto(buscar));
                     break;
                 case 5:
-                    System.out.println("Guardando...");
-                    almacenamiento.guardarBoveda(boveda, contrasena);
-                    System.out.println("¡Guardado! Regresando...");
-                    continuar = false;
+                    System.out.print("Nombre a eliminar: ");
+		    String eliminar = lector.nextLine();
+		    boveda.eliminarSecreto(eliminar);
                     break;
-                default:
+	        case 6: 
+		    System.out.println("Guardando ...");
+		    almacenamiento.guardarBoveda(boveda, contrasena);
+		    System.out.println("Guardado exitosamente");
+		    continuar = false;
+		    break;
+		default:
                     System.out.println("Opción inválida.");
             }
         }
