@@ -1,7 +1,7 @@
 # Gestor-de-Contrase-as-en-Java
 Proyecto final para Paradigmas de la programación
 
-''' sex  
+'''plaintext  
 Gestor-de-Contraseñas-en-Java
 ├── main
 │   └── Main.java
