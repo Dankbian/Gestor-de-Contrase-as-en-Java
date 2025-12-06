@@ -50,7 +50,8 @@ public class Main {
                 System.out.println("\n--- Menú Principal ---");
                 System.out.println("1. " + moduloBoveda.obtenerNombre());
                 System.out.println("2. " + moduloArchivos.obtenerNombre());
-                System.out.println("3. Salir");
+                System.out.println("3. Cambiar contraseña maestra");
+		System.out.println("4. Salir");
                 System.out.print("> ");
 
                 // Leemos opción (usando trim para evitar espacios basura)
@@ -64,7 +65,12 @@ public class Main {
                         moduloArchivos.ejecutar(); // Polimorfismo
                         break;
                     case "3":
-                        System.out.println("Cerrando programa... ¡Adiós!");
+                        cambiarContrasenaMaestra();
+			moduloBoveda = new ModuloBoveda(boveda, almacenamiento, contrasenaActual, lector);
+			moduloArchivos = new ModuloArchivos(contrasenaActual, lector);
+			break;
+		    case "4":
+			System.out.println("Cerrando programa... ¡Adiós!");
                         enEjecucion = false;
                         break;
                     default:
@@ -128,6 +134,34 @@ public class Main {
             }
         }
         return contrasena;
+    }
+
+    private static void cambiarContrasenaMaestra(){
+    	System.out.println("\n--- Cambio de contraseña maestra ---");
+	try {
+	// Primero verificmos que la contraseña maestra sea la misma, es decir, llevamos a cabo una autenticación
+	    String contraActualIngresada = leerContrasena("Introduce tu contraseña actual: ", false);
+	    almacenamiento.cargarBoveda(contraActualIngresada);
+
+	    //Solicitamos la nueva contraseña 
+	    String nuevaContra = leerContrasena("Introduce la nueva contraseña: ", true);
+	    String nuevaContraVerificada = leerContrasena("Confirme la nueva contraseña: ", false);
+
+	    if (!nuevaContra.equals(nuevaContraVerificada)){
+	    System.out.println("ERROR: Las contraseñas no coinciden");
+
+	    	return;
+	    }
+
+	    //Aplicamos el cambio de la contraseña 
+	    almacenamiento.guardarBoveda(boveda, nuevaContra);
+
+	    // Se actualiza también la variable estática en memoria 
+	    contrasenaActual = nuevaContra;
+	    System.out.println("Contraseña maestra cambiada con éxito");
+	} catch (Exception e){
+	     System.err.println("Error al cambiar la contraseña: " + e.getMessage());	
+	}
     }
 
     private static boolean esNueva(String contrasena) {
