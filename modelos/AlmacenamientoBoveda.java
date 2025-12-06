@@ -6,16 +6,38 @@ import javax.crypto.SecretKey;
 public class AlmacenamientoBoveda {
 
     private static final String NOMBRE_ARCHIVO = "boveda.dat";
+    private File archivoBoveda;
 
+    public AlmacenamientoBoveda() {
+        
+        File directorioActual = new File(System.getProperty("user.dir"));
+        File raizProyecto = directorioActual;
 
-    public boolean existeBoveda() {
-        return new File(NOMBRE_ARCHIVO).exists();
+        while (raizProyecto != null) {
+            File srcDir = new File(raizProyecto, "src");
+            File ideaDir = new File(raizProyecto, ".idea");
+
+            if (srcDir.exists() || ideaDir.exists()) {
+                break;
+            }
+
+            if (raizProyecto.getParentFile() == null) {
+                break;
+            }
+
+            raizProyecto = raizProyecto.getParentFile();
+        }
+
+        archivoBoveda = new File(raizProyecto, NOMBRE_ARCHIVO);
+        System.out.println("Archivo de bóveda en: " + archivoBoveda.getAbsolutePath());
     }
 
-    // Cargar archivo del disco -> Descifrar -> Convertir en Objeto
+    public boolean existeBoveda() {
+        return archivoBoveda.exists();
+    }
+
     public Boveda cargarBoveda(String contrasena) throws Exception {
-        // Usamos obtenerArchivo()
-        try (FileInputStream archivoEntrada = new FileInputStream(NOMBRE_ARCHIVO)) {
+        try (FileInputStream archivoEntrada = new FileInputStream(archivoBoveda)) {
 
             // 1. Leemos los bytes cifrados del disco
             byte[] datosCifrados = archivoEntrada.readAllBytes();
@@ -31,6 +53,8 @@ public class AlmacenamientoBoveda {
 
         } catch (javax.crypto.BadPaddingException e) {
             throw new Exception("Contraseña incorrecta o archivo dañado.");
+        } catch (FileNotFoundException e) {
+            throw new Exception("No se encontró el archivo de bóveda en: " + archivoBoveda.getAbsolutePath());
         }
     }
 
@@ -42,8 +66,7 @@ public class AlmacenamientoBoveda {
         byte[] datosOriginales = boveda.convertirABytes();
         byte[] datosCifrados = UtilidadesCifrado.cifrar(datosOriginales, clave);
 
-        // Usamos obtenerArchivo()
-        try (FileOutputStream archivoSalida = new FileOutputStream(NOMBRE_ARCHIVO)) {
+        try (FileOutputStream archivoSalida = new FileOutputStream(archivoBoveda)) {
             archivoSalida.write(datosCifrados);
         }
     }
