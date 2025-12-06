@@ -1,20 +1,18 @@
 # Gestor-de-Contrase-as-en-Java
 Proyecto final para Paradigmas de la programación
 
-```md
-<pre>
-Gestor-de-Contraseñas-en-Java
+```bash
+Gestor-de-Contrase-as-en-Java
 ├── main
-│   └── Main.java
+│   └── Main.java
 ├── modelos
-│   ├── AlmacenamientoBoveda.java
-│   ├── Boveda.java
-│   ├── modelos
-│   │   └── AlmacenamientoBoveda.class
-│   └── UtilidadesCifrado.java
+│   ├── AlmacenamientoBoveda.java
+│   ├── Boveda.java
+│   ├── modelos
+│   │   └── AlmacenamientoBoveda.class
+│   └── UtilidadesCifrado.java
 ├── modulos
-│   ├── ModuloArchivos.java
-│   ├── ModuloBase.java
-│   └── ModuloBoveda.java
+│   ├── ModuloArchivos.java
+│   ├── ModuloBase.java
+│   └── ModuloBoveda.java
 └── README.md
-</pre>
