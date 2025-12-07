@@ -113,7 +113,7 @@ public class Main {
         System.out.println("¡Acceso concedido!");
     }
     
-    private static String leerContrasena(String mensaje, boolean pene) {
+    private static String leerContrasena(String mensaje, boolean necesitaValidar) {
         Console console = System.console();
         String contrasena = "";
         boolean bandera = true;
@@ -127,7 +127,7 @@ public class Main {
                 contrasena = lector.nextLine();
             }
 
-            if (pene) {
+            if (necesitaValidar) {
                 bandera = esNueva(contrasena);
             } else {
                 bandera = false;
